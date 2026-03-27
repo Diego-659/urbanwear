@@ -16,7 +16,12 @@ export default function Navbar() {
           {['Inicio', 'Catálogo', 'Colecciones', 'Nosotros'].map((item) => (
             <li key={item}>
               <Link
-                to={item === 'Inicio' ? '/' : `/${item.toLowerCase()}`}
+                to={
+  item === 'Inicio' ? '/' :
+  item === 'Catálogo' ? '/catalogo' :
+  item === 'Colecciones' ? '/colecciones' :
+  item === 'Nosotros' ? '/nosotros' : '/'
+}
                 className="text-xs tracking-widest uppercase text-[#94A3B8] hover:text-[#F8FAFF] transition-colors"
               >
                 {item}
