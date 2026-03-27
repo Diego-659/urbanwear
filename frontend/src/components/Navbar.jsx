@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useCart } from '../context/CartContext'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const { totalItems } = useCart()
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0D1B3E] border-b border-white/10">
@@ -13,15 +15,15 @@ export default function Navbar() {
         </Link>
 
         <ul className="hidden md:flex items-center gap-8">
-          {['Inicio', 'Catálogo', 'Colecciones', 'Nosotros'].map((item) => (
+          {['Inicio', 'Catalogo', 'Colecciones', 'Nosotros'].map((item) => (
             <li key={item}>
               <Link
                 to={
-  item === 'Inicio' ? '/' :
-  item === 'Catálogo' ? '/catalogo' :
-  item === 'Colecciones' ? '/colecciones' :
-  item === 'Nosotros' ? '/nosotros' : '/'
-}
+                  item === 'Inicio' ? '/' :
+                  item === 'Catalogo' ? '/catalogo' :
+                  item === 'Colecciones' ? '/colecciones' :
+                  '/nosotros'
+                }
                 className="text-xs tracking-widest uppercase text-[#94A3B8] hover:text-[#F8FAFF] transition-colors"
               >
                 {item}
@@ -31,19 +33,21 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-3">
-          <button className="p-2 rounded-lg bg-[#1A3A6B] hover:bg-[#2563EB] transition-colors">
+          <button className="p-2 rounded-lg bg-[#1A3A6B] hover:bg-[#2563EB] transition-colors text-lg">
             🔍
           </button>
 
-          <Link to="/cart" className="relative p-2 rounded-lg bg-[#1A3A6B] hover:bg-[#2563EB] transition-colors">
+          <Link to="/carrito" className="relative p-2 rounded-lg bg-[#1A3A6B] hover:bg-[#2563EB] transition-colors text-lg">
             🛍️
-            <span className="absolute -top-1 -right-1 bg-[#2563EB] text-white text-[9px] font-semibold w-4 h-4 rounded-full flex items-center justify-center">
-              3
-            </span>
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 bg-[#2563EB] text-white text-[9px] font-semibold w-4 h-4 rounded-full flex items-center justify-center">
+                {totalItems}
+              </span>
+            )}
           </Link>
 
           <button
-            className="md:hidden p-2 rounded-lg bg-[#1A3A6B]"
+            className="md:hidden p-2 rounded-lg bg-[#1A3A6B] text-[#F8FAFF]"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             {menuOpen ? '✕' : '☰'}
@@ -53,10 +57,15 @@ export default function Navbar() {
 
       {menuOpen && (
         <div className="md:hidden bg-[#0D1B3E] border-t border-white/10 px-6 py-4 flex flex-col gap-4">
-          {['Inicio', 'Catálogo', 'Colecciones', 'Nosotros'].map((item) => (
+          {['Inicio', 'Catalogo', 'Colecciones', 'Nosotros'].map((item) => (
             <Link
               key={item}
-              to={item === 'Inicio' ? '/' : `/${item.toLowerCase()}`}
+              to={
+                item === 'Inicio' ? '/' :
+                item === 'Catalogo' ? '/catalogo' :
+                item === 'Colecciones' ? '/colecciones' :
+                '/nosotros'
+              }
               className="text-sm tracking-widest uppercase text-[#94A3B8] hover:text-[#F8FAFF] transition-colors"
               onClick={() => setMenuOpen(false)}
             >
