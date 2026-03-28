@@ -7,6 +7,8 @@ import Collections from './pages/Collections.jsx'
 import About from './pages/About.jsx'
 import Cart from './pages/Cart.jsx'
 import Checkout from './pages/Checkout.jsx'
+import Login from './pages/Login.jsx'
+import Register from './pages/Register.jsx'
 
 export default function App() {
   return (
@@ -19,6 +21,8 @@ export default function App() {
         <Route path="/nosotros" element={<About />} />
         <Route path="/carrito" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={<Register />} />
       </Routes>
       <Footer />
     </BrowserRouter>

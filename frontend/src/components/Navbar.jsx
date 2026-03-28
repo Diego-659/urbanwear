@@ -1,10 +1,18 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const { totalItems } = useCart()
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/')
+  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0D1B3E] border-b border-white/10">
@@ -33,9 +41,6 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-3">
-          <button className="p-2 rounded-lg bg-[#1A3A6B] hover:bg-[#2563EB] transition-colors text-lg">
-            🔍
-          </button>
 
           <Link to="/carrito" className="relative p-2 rounded-lg bg-[#1A3A6B] hover:bg-[#2563EB] transition-colors text-lg">
             🛍️
@@ -45,6 +50,35 @@ export default function Navbar() {
               </span>
             )}
           </Link>
+
+          {user ? (
+            <div className="hidden md:flex items-center gap-3">
+              <span className="text-[#94A3B8] text-xs tracking-widest uppercase">
+                Hola, {user.name.split(' ')[0]}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="text-xs tracking-widest uppercase text-[#64748B] hover:text-red-400 transition-colors"
+              >
+                Salir
+              </button>
+            </div>
+          ) : (
+            <div className="hidden md:flex items-center gap-3">
+              <Link
+                to="/login"
+                className="text-xs tracking-widest uppercase text-[#94A3B8] hover:text-[#F8FAFF] transition-colors"
+              >
+                Login
+              </Link>
+              <Link
+                to="/registro"
+                className="bg-[#2563EB] text-white text-xs font-medium tracking-widest uppercase px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Registro
+              </Link>
+            </div>
+          )}
 
           <button
             className="md:hidden p-2 rounded-lg bg-[#1A3A6B] text-[#F8FAFF]"
@@ -72,6 +106,19 @@ export default function Navbar() {
               {item}
             </Link>
           ))}
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="text-sm tracking-widest uppercase text-red-400 text-left"
+            >
+              Cerrar sesión
+            </button>
+          ) : (
+            <>
+              <Link to="/login" className="text-sm tracking-widest uppercase text-[#94A3B8]" onClick={() => setMenuOpen(false)}>Login</Link>
+              <Link to="/registro" className="text-sm tracking-widest uppercase text-[#2563EB]" onClick={() => setMenuOpen(false)}>Registro</Link>
+            </>
+          )}
         </div>
       )}
     </nav>
