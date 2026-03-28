@@ -9,6 +9,9 @@ import Cart from './pages/Cart.jsx'
 import Checkout from './pages/Checkout.jsx'
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
+import Dashboard from './pages/admin/Dashboard.jsx'
+import AdminProducts from './pages/admin/Products.jsx'
+import AdminOrders from './pages/admin/Orders.jsx'
 
 export default function App() {
   return (
@@ -23,6 +26,9 @@ export default function App() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Register />} />
+        <Route path="/admin" element={<Dashboard />} />
+        <Route path="/admin/productos" element={<AdminProducts />} />
+        <Route path="/admin/pedidos" element={<AdminOrders />} />
       </Routes>
       <Footer />
     </BrowserRouter>
