@@ -11,7 +11,13 @@ const bcrypt = require('bcryptjs')
 const app = express()
 const prisma = new PrismaClient()
 
-app.use(cors({ origin: '*' }))
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'https://urbanwear-eight.vercel.app'
+  ]
+}))
 app.use(express.json())
 
 app.use('/api/auth', authRoutes)
