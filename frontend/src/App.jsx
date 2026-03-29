@@ -12,6 +12,8 @@ import Register from './pages/Register.jsx'
 import Dashboard from './pages/admin/Dashboard.jsx'
 import AdminProducts from './pages/admin/Products.jsx'
 import AdminOrders from './pages/admin/Orders.jsx'
+import ProtectedAdmin from './components/ProtectedAdmin.jsx'
+
 
 export default function App() {
   return (
@@ -29,6 +31,9 @@ export default function App() {
         <Route path="/admin" element={<Dashboard />} />
         <Route path="/admin/productos" element={<AdminProducts />} />
         <Route path="/admin/pedidos" element={<AdminOrders />} />
+        <Route path="/admin" element={<ProtectedAdmin><Dashboard /></ProtectedAdmin>} />
+<Route path="/admin/productos" element={<ProtectedAdmin><AdminProducts /></ProtectedAdmin>} />
+<Route path="/admin/pedidos" element={<ProtectedAdmin><AdminOrders /></ProtectedAdmin>} />
       </Routes>
       <Footer />
     </BrowserRouter>

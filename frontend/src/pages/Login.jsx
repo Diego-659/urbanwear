@@ -22,8 +22,12 @@ export default function Login() {
     }
     try {
       setLoading(true)
-      await login(form.email, form.password)
-      navigate('/')
+      const data = await login(form.email, form.password)
+if (data.user.role === 'admin') {
+  navigate('/admin')
+} else {
+  navigate('/')
+}
     } catch (err) {
       setError(err.response?.data?.error || 'Error al iniciar sesión')
     } finally {
@@ -94,3 +98,4 @@ export default function Login() {
     </div>
   )
 }
+
