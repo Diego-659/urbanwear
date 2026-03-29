@@ -9,13 +9,14 @@ export default function Register() {
     nombre: '', apellido: '', email: '', password: '', confirmPassword: ''
   })
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
     setError('')
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!form.nombre || !form.email || !form.password) {
       setError('Por favor completa todos los campos')
@@ -29,19 +30,21 @@ export default function Register() {
       setError('La contraseña debe tener al menos 6 caracteres')
       return
     }
-    register({
-      name: `${form.nombre} ${form.apellido}`,
-      email: form.email,
-      role: 'customer',
-    })
-    navigate('/')
+    try {
+      setLoading(true)
+      await register(`${form.nombre} ${form.apellido}`, form.email, form.password)
+      navigate('/')
+    } catch (err) {
+      setError(err.response?.data?.error || 'Error al registrarse')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <div className="min-h-screen bg-[#0A0F1E] flex items-center justify-center px-6 py-24">
       <div className="w-full max-w-md">
 
-        {/* Logo */}
         <div className="text-center mb-10">
           <Link to="/" className="text-3xl font-semibold tracking-widest uppercase text-[#F8FAFF]">
             Urban<span className="text-[#2563EB]">Wear</span>
@@ -49,9 +52,7 @@ export default function Register() {
           <p className="text-[#64748B] text-sm mt-2">Crea tu cuenta gratis</p>
         </div>
 
-        {/* Card */}
         <div className="bg-[#0D1B3E] border border-white/10 rounded-2xl p-8">
-
           <h1 className="text-2xl font-semibold text-[#F8FAFF] mb-6">Crear cuenta</h1>
 
           {error && (
@@ -63,9 +64,7 @@ export default function Register() {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-[#64748B] text-xs tracking-widest uppercase block mb-2">
-                  Nombre
-                </label>
+                <label className="text-[#64748B] text-xs tracking-widest uppercase block mb-2">Nombre</label>
                 <input
                   type="text"
                   name="nombre"
@@ -76,9 +75,7 @@ export default function Register() {
                 />
               </div>
               <div>
-                <label className="text-[#64748B] text-xs tracking-widest uppercase block mb-2">
-                  Apellido
-                </label>
+                <label className="text-[#64748B] text-xs tracking-widest uppercase block mb-2">Apellido</label>
                 <input
                   type="text"
                   name="apellido"
@@ -91,9 +88,7 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="text-[#64748B] text-xs tracking-widest uppercase block mb-2">
-                Email
-              </label>
+              <label className="text-[#64748B] text-xs tracking-widest uppercase block mb-2">Email</label>
               <input
                 type="email"
                 name="email"
@@ -105,9 +100,7 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="text-[#64748B] text-xs tracking-widest uppercase block mb-2">
-                Contraseña
-              </label>
+              <label className="text-[#64748B] text-xs tracking-widest uppercase block mb-2">Contraseña</label>
               <input
                 type="password"
                 name="password"
@@ -119,9 +112,7 @@ export default function Register() {
             </div>
 
             <div>
-              <label className="text-[#64748B] text-xs tracking-widest uppercase block mb-2">
-                Confirmar contraseña
-              </label>
+              <label className="text-[#64748B] text-xs tracking-widest uppercase block mb-2">Confirmar contraseña</label>
               <input
                 type="password"
                 name="confirmPassword"
@@ -134,19 +125,17 @@ export default function Register() {
 
             <button
               type="submit"
-              className="w-full bg-[#2563EB] hover:bg-blue-700 text-white text-sm font-medium tracking-widest uppercase py-4 rounded-lg transition-colors mt-2"
+              disabled={loading}
+              className="w-full bg-[#2563EB] hover:bg-blue-700 text-white text-sm font-medium tracking-widest uppercase py-4 rounded-lg transition-colors mt-2 disabled:opacity-50"
             >
-              Crear cuenta
+              {loading ? 'Creando cuenta...' : 'Crear cuenta'}
             </button>
           </form>
 
           <p className="text-[#64748B] text-sm text-center mt-6">
             ¿Ya tienes cuenta?{' '}
-            <Link to="/login" className="text-[#2563EB] hover:underline">
-              Inicia sesión
-            </Link>
+            <Link to="/login" className="text-[#2563EB] hover:underline">Inicia sesión</Link>
           </p>
-
         </div>
       </div>
     </div>
